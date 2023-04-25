@@ -17,7 +17,7 @@ const generateCandles = async (): Promise<void> => {
   const openChannel: Channel | undefined = await createChannel()
 
   while(openChannel) {
-    const loopTime = Period.TEN_MIN / Period.FOURTY_SEC
+    const loopTime = Period.TWO_MIN / Period.FOURTY_SEC
     const candle = new Candle(process.env.COIN!)
 
     for (let i = 0; i < loopTime; i++) {
