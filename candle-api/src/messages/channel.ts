@@ -32,14 +32,13 @@ class CandleRabbitMQ {
   private _connectSocketIO(server: http.Server) {
     this._io = new Server(server, {
       cors: {
-        origin: process.env.SOCKET_CLIENT_SERVER!,
+        origin: [process.env.SOCKET_SERVER!, process.env.SOCKET_CLIENT!],
         methods: ['GET', 'POST'],
       },
     })
-    this._io.on('connection', () => {
+    this._io.once('connection', () => {
       console.log('Web Socket IO server connected')
     })
-    this._io.listen(+process.env.SOCKET_PORT!)
   }
 
   async consumeMessages() {
@@ -53,7 +52,7 @@ class CandleRabbitMQ {
           await this._candleController.save(data)
           this._io.emit(process.env.SOCKET_EVENT_NAME!, data)
           console.log('Message received by RabbitMQ and emitted by SocketIO', data)
-          this._channel.ack(msg)
+          this._channel.ack(msg, true)
         }
     })
     console.log('RabbitMQ consuming is ON')

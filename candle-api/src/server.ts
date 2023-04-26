@@ -9,8 +9,8 @@ const createAppServer = async () => {
   config()
 
   await connectMongoDB()
-  const server = app.listen(process.env.PORT_WEB!, () => {
-    console.debug('App server listening on ', process.env.PORT_WEB!);
+  const server = app.listen(process.env.SERVER_PORT!, () => {
+    console.debug('App server listening on ', process.env.SERVER_PORT!);
   }); 
   const rabbitServer = new CandleRabbitMQ(server)
   await rabbitServer.consumeMessages()
